@@ -11,7 +11,7 @@ end
 require File.dirname(__FILE__) + "/../rails/init"
 
 
-describe "freeze_attributes" do
+describe "attr_frozen" do
   before(:each) do
     build_model :things do
       string :string_attribute, :default => "foobar"
@@ -25,7 +25,7 @@ describe "freeze_attributes" do
         alias_method :method_missing, :method_missing_without_columns
       end
       
-      freeze_attributes :string_attribute, :serialized_attribute
+      attr_frozen :string_attribute, :serialized_attribute
     end
   end
   

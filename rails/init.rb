@@ -1,3 +1,3 @@
-require 'freeze_attributes'
+require 'freeze_ray'
 
-ActiveRecord::Base.extend FreezeAttributes
+ActiveRecord::Base.extend FreezeRay
