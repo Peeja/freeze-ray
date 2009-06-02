@@ -14,9 +14,15 @@ require File.dirname(__FILE__) + "/../rails/init"
 describe "attr_frozen" do
   before(:each) do
     build_model :things do
-      string :string_attribute, :default => "foobar"
+      string :string_attribute
       string :serialized_attribute
+      string :overridden_attribute
+      
       serialize :serialized_attribute
+      
+      def overridden_attribute
+        [super]
+      end
       
       # Turn off acts_as_foo's method_missing extension for schema
       # definition.  For some reason, it delegates #define_method to
@@ -25,7 +31,7 @@ describe "attr_frozen" do
         alias_method :method_missing, :method_missing_without_columns
       end
       
-      attr_frozen :string_attribute, :serialized_attribute
+      attr_frozen :string_attribute, :serialized_attribute, :overridden_attribute
     end
   end
   
@@ -37,5 +43,11 @@ describe "attr_frozen" do
     
     specify("strings") { @thing.string_attribute.should be_frozen }
     specify("serialized") { @thing.serialized_attribute.should be_frozen }
+  end
+  
+  it "doesn't interfere with overriding methods" do
+    thing = Thing.new(:overridden_attribute => "foobar")
+    thing.overridden_attribute.should == ["foobar"]
+    thing.overridden_attribute.first.should be_frozen
   end
 end
