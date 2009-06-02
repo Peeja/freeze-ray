@@ -1,3 +1,10 @@
-=== 0.4.0 :: 2009-05-29
+=== 0.0.2 :: 2009-06-02
+
+* Add rails/init.rb, which was left out of the last release.
+* Make freeze-ray actually play well with the way ActiveRecord defines
+  accessors.  Things should work well enough to be useful now.
+
+
+=== 0.0.1 :: 2009-05-29
 
 * Initial release.
