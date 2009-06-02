@@ -31,6 +31,7 @@ describe "attr_frozen" do
         alias_method :method_missing, :method_missing_without_columns
       end
       
+      define_attribute_methods
       attr_frozen :string_attribute, :serialized_attribute, :overridden_attribute
     end
   end
@@ -38,16 +39,12 @@ describe "attr_frozen" do
   describe "freezes attributes which are" do
     before do
       @thing = Thing.new(:string_attribute => "foobar",
-                         :serialized_attribute => [:a, :b, :c])
+                         :serialized_attribute => [:a, :b, :c],
+                         :overridden_attribute => "bazbax")
     end
     
-    specify("strings") { @thing.string_attribute.should be_frozen }
+    specify("strings")    { @thing.string_attribute.should be_frozen }
     specify("serialized") { @thing.serialized_attribute.should be_frozen }
-  end
-  
-  it "doesn't interfere with overriding methods" do
-    thing = Thing.new(:overridden_attribute => "foobar")
-    thing.overridden_attribute.should == ["foobar"]
-    thing.overridden_attribute.first.should be_frozen
+    specify("overridden") { @thing.overridden_attribute.should be_frozen }
   end
 end
